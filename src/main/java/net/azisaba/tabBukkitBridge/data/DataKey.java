@@ -4,9 +4,8 @@ import net.azisaba.tabBukkitBridge.BukkitBridge;
 import net.azisaba.tabBukkitBridge.data.providers.EssentialsDataProvider;
 import net.azisaba.tabBukkitBridge.data.providers.LuckPermsDataProvider;
 import net.azisaba.tabBukkitBridge.data.providers.PlayerDataProvider;
-import net.azisaba.tabBukkitBridge.data.providers.ServerTPSDataProvider;
+import net.azisaba.tabBukkitBridge.data.providers.ServerDataProvider;
 import net.azisaba.tabBukkitBridge.data.providers.VaultDataProvider;
-import net.azisaba.tabBukkitBridge.util.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -26,9 +25,13 @@ public class DataKey<T, R> {
     public static final DataKey<Void, Double> TPS = new DataKey<Void, Double>(p -> null, 20.0).placeholders("tps");
     public static final DataKey<Double, String> TPS_FORMATTED = new DataKey<>(p -> TPS.get(null), "20.00").placeholders("tps_formatted");
     public static final DataKey<Player, String> WORLD = new DataKey<Player, String>("world").placeholders("world");
+    public static final DataKey<Player, Boolean> ESSENTIALS_VANISHED = new DataKey<Player, Boolean>(false).placeholders("essentials_vanished");
     public static final DataKey<Player, Boolean> VANISHED = new DataKey<Player, Boolean>(false).placeholders("vanished");
+    public static final DataKey<Player, Boolean> ESSENTIALS_AFK = new DataKey<Player, Boolean>(false).placeholders("essentials_afk");
+    public static final DataKey<Player, Boolean> AFK = new DataKey<Player, Boolean>(false).placeholders("afk");
     public static final DataKey<Player, Boolean> DISGUISED = new DataKey<Player, Boolean>(false).placeholders("disguised");
     public static final DataKey<Player, Boolean> INVISIBLE = new DataKey<Player, Boolean>(false).placeholders("invisible");
+    public static final DataKey<Player, String> LUCKPERMS_PRIMARY_GROUP = new DataKey<Player, String>("default").placeholders("luckperms_primary_group");
     public static final DataKey<Player, String> PRIMARY_GROUP = new DataKey<Player, String>("default").placeholders("primary_group");
     public static final DataKey<Player, Integer> PRIMARY_GROUP_WEIGHT = new DataKey<Player, Integer>(0).placeholders("primary_group_weight");
     public static final DataKey<Player, String> PREFIX = new DataKey<Player, String>("").placeholders("prefix");
@@ -41,6 +44,8 @@ public class DataKey<T, R> {
     public static final DataKey<Player, Double> POSITION_Y = new DataKey<Player, Double>(0.0).placeholders("position_y");
     public static final DataKey<Player, Double> POSITION_Z = new DataKey<Player, Double>(0.0).placeholders("position_z");
     public static final DataKey<Player, String> GAMEMODE = new DataKey<Player, String>("survival").placeholders("gamemode");
+    public static final DataKey<Player, Integer> PLAYER_COUNT = new DataKey<Player, Integer>(0).placeholders("player_count");
+    public static final DataKey<Player, Integer> SAFE_PLAYER_COUNT = new DataKey<Player, Integer>(0).placeholders("safe_player_count");
 
     private final Function<Player, T> ptFunction;
     private final R defaultValue;
@@ -71,8 +76,9 @@ public class DataKey<T, R> {
      * @param condition condition to trigger provider
      * @param provider data provider
      */
-    public void register(@NotNull Predicate<@Nullable T> condition, @NotNull Function<@Nullable T, @Nullable R> provider) {
-        providers.add(new DataProvider<T, R>() {
+    @SafeVarargs
+    public final void register(@NotNull Predicate<@Nullable T> condition, @NotNull Function<@Nullable T, @Nullable R> provider, @NotNull DataKey<T, R>@NotNull... additionalKeys) {
+        DataProvider<T, R> dataProvider = new DataProvider<T, R>() {
             @Override
             public boolean test(T t) {
                 return condition.test(t);
@@ -82,15 +88,23 @@ public class DataKey<T, R> {
             public R apply(T t) {
                 return provider.apply(t);
             }
-        });
+        };
+        providers.add(dataProvider);
+        for (DataKey<T, R> key : additionalKeys) {
+            key.register(dataProvider);
+        }
     }
 
     /**
      * Registers a new provider. this method is not thread-safe.
      * @param provider data provider
      */
-    public void register(@NotNull DataProvider<T, R> provider) {
+    @SafeVarargs
+    public final void register(@NotNull DataProvider<T, R> provider, @NotNull DataKey<T, R>@NotNull... additionalKeys) {
         providers.add(provider);
+        for (DataKey<T, R> key : additionalKeys) {
+            key.register(provider);
+        }
     }
 
     @NotNull
@@ -131,11 +145,7 @@ public class DataKey<T, R> {
         EssentialsDataProvider.register();
         VaultDataProvider.register();
         PlayerDataProvider.register();
-        TPS.register(new ServerTPSDataProvider(plugin));
-        TPS_FORMATTED.register(d -> true, d -> {
-            if (d == null) return "20.00";
-            return Util.format(d);
-        });
+        ServerDataProvider.register(plugin);
     }
 
     @NotNull

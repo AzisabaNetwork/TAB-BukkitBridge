@@ -24,7 +24,7 @@ public class DataKey<T, R> {
     private static final List<DataKey<?, ?>> DATA_TYPES = new ArrayList<>();
     public static final DataKey<Void, Double> TPS = new DataKey<Void, Double>(p -> null, 20.0).placeholders("tps");
     public static final DataKey<Double, String> TPS_FORMATTED = new DataKey<>(p -> TPS.get(null), "20.00").placeholders("tps_formatted");
-    public static final DataKey<Player, String> WORLD = new DataKey<Player, String>("world").placeholders("world");
+    public static final DataKey<Player, String> WORLD = new DataKey<Player, String>("world").placeholders("world", "player_world");
     public static final DataKey<Player, Boolean> ESSENTIALS_VANISHED = new DataKey<Player, Boolean>(false).placeholders("essentials_vanished");
     public static final DataKey<Player, Boolean> VANISHED = new DataKey<Player, Boolean>(false).placeholders("vanished");
     public static final DataKey<Player, Boolean> ESSENTIALS_AFK = new DataKey<Player, Boolean>(false).placeholders("essentials_afk");

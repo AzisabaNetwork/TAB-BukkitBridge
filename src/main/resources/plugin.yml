@@ -1,0 +1,7 @@
+name: TAB-BukkitBridge
+version: 1.0.0
+main: net.azisaba.tabBukkitBridge.BukkitBridge
+softdepend:
+  - Vault
+  - LuckPerms
+  - Essentials

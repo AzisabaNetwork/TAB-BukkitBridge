@@ -4,6 +4,7 @@ import net.azisaba.tabBukkitBridge.data.Skip;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.util.function.Function;
@@ -17,6 +18,12 @@ public class Util {
     @NotNull
     public static <T> Predicate<T> isPluginEnabledPredicate(@NotNull String plugin) {
         return v -> Bukkit.getPluginManager().isPluginEnabled(plugin);
+    }
+
+    @Contract(value = "null, _ -> null", pure = true)
+    public static <T, R> R nonNullMap(@Nullable T t, @NotNull Function<@NotNull T, R> function) {
+        if (t == null) return null;
+        return function.apply(t);
     }
 
     @NotNull

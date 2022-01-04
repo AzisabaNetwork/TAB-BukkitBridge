@@ -5,6 +5,7 @@ import net.azisaba.tabBukkitBridge.data.Skip;
 import net.azisaba.tabBukkitBridge.util.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Team;
 
 import java.util.Locale;
 
@@ -24,5 +25,6 @@ public class PlayerDataProvider {
             }
             throw Skip.SKIP;
         }));
+        DataKey.TEAM_NAME.register(p -> true, Util.nonNullMapper(p -> Util.nonNullMap(Util.nonNullMap(p.getScoreboard(), s -> s.getEntryTeam(p.getName())), Team::getName)));
     }
 }

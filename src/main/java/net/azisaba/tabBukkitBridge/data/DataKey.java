@@ -44,6 +44,7 @@ public class DataKey<T, R> {
     public static final DataKey<Player, Double> POSITION_Y = new DataKey<Player, Double>(0.0).placeholders("position_y");
     public static final DataKey<Player, Double> POSITION_Z = new DataKey<Player, Double>(0.0).placeholders("position_z");
     public static final DataKey<Player, String> GAMEMODE = new DataKey<Player, String>("survival").placeholders("gamemode");
+    public static final DataKey<Player, String> TEAM_NAME = new DataKey<Player, String>("").placeholders("team_name");
     public static final DataKey<Player, Integer> PLAYER_COUNT = new DataKey<Player, Integer>(0).placeholders("player_count");
     public static final DataKey<Player, Integer> SAFE_PLAYER_COUNT = new DataKey<Player, Integer>(0).placeholders("safe_player_count");
 

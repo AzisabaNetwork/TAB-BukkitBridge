@@ -1,6 +1,7 @@
 package net.azisaba.tabBukkitBridge.data;
 
 import net.azisaba.tabBukkitBridge.BukkitBridge;
+import net.azisaba.tabBukkitBridge.data.providers.CachedDataProvider;
 import net.azisaba.tabBukkitBridge.data.providers.EssentialsDataProvider;
 import net.azisaba.tabBukkitBridge.data.providers.LuckPermsDataProvider;
 import net.azisaba.tabBukkitBridge.data.providers.PlayerDataProvider;
@@ -34,7 +35,11 @@ public class DataKey<T, R> {
     public static final DataKey<Player, String> LUCKPERMS_PRIMARY_GROUP = new DataKey<Player, String>("default").placeholders("luckperms_primary_group");
     public static final DataKey<Player, String> PRIMARY_GROUP = new DataKey<Player, String>("default").placeholders("primary_group");
     public static final DataKey<Player, Integer> PRIMARY_GROUP_WEIGHT = new DataKey<Player, Integer>(0).placeholders("primary_group_weight");
+    public static final DataKey<Player, String> VAULT_PREFIX = new DataKey<Player, String>("").placeholders("vault_prefix");
+    public static final DataKey<Player, String> PREFIX_CACHED = new DataKey<Player, String>("").placeholders("prefix_cached");
     public static final DataKey<Player, String> PREFIX = new DataKey<Player, String>("").placeholders("prefix");
+    public static final DataKey<Player, String> VAULT_SUFFIX = new DataKey<Player, String>("").placeholders("vault_suffix");
+    public static final DataKey<Player, String> SUFFIX_CACHED = new DataKey<Player, String>("").placeholders("suffix_cached");
     public static final DataKey<Player, String> SUFFIX = new DataKey<Player, String>("").placeholders("suffix");
     public static final DataKey<Player, Double> MONEY = new DataKey<Player, Double>(0.0).placeholders("money");
     public static final DataKey<Player, String> MONEY_FORMATTED = new DataKey<Player, String>("0.00").placeholders("money_formatted");
@@ -147,6 +152,7 @@ public class DataKey<T, R> {
         VaultDataProvider.register();
         PlayerDataProvider.register();
         ServerDataProvider.register(plugin);
+        CachedDataProvider.register(plugin);
     }
 
     @NotNull

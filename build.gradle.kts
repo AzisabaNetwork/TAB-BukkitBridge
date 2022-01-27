@@ -27,3 +27,22 @@ dependencies {
     compileOnly("net.luckperms:api:5.3")
     compileOnly("net.essentialsx:EssentialsX:2.19.2")
 }
+
+tasks {
+    withType<ProcessResources> {
+        filteringCharset = "UTF-8"
+        from(sourceSets.main.get().resources.srcDirs) {
+            include("**")
+
+            val tokenReplacementMap = mapOf(
+                "version" to project.version,
+            )
+
+            filter<org.apache.tools.ant.filters.ReplaceTokens>("tokens" to tokenReplacementMap)
+        }
+
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+        from(projectDir) { include("LICENSE") }
+    }
+}

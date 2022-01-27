@@ -1,5 +1,5 @@
 name: TAB-BukkitBridge
-version: 1.0.0
+version: @version@
 main: net.azisaba.tabBukkitBridge.BukkitBridge
 softdepend:
   - Vault

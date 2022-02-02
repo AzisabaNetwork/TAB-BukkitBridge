@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -145,6 +146,11 @@ public class DataKey<T, R> {
         return s;
     }
 
+    @NotNull
+    public Set<String> getPlaceholders() {
+        return placeholders;
+    }
+
     public static void registerAllProviders(@NotNull Plugin plugin) {
         // Priority: top -> bottom (top would be evaluated at first, and bottom would be evaluated at last)
         LuckPermsDataProvider.register();
@@ -161,5 +167,14 @@ public class DataKey<T, R> {
             s = dataKey.setPlaceholder(dataKey.ptFunction.apply(player), s);
         }
         return s;
+    }
+
+    public T playerToT(Player player) {
+        return ptFunction.apply(player);
+    }
+
+    @NotNull
+    public static List<DataKey<?, ?>> values() {
+        return Collections.unmodifiableList(DATA_TYPES);
     }
 }

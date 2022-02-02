@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "net.azisaba"
-version = "1.1.0"
+version = "1.2.0"
 
 java {
     toolchain {
@@ -16,11 +16,15 @@ repositories {
     maven { url = uri("https://hub.spigotmc.org/nexus/content/groups/public/") }
     maven { url = uri("https://jitpack.io") }
     maven { url = uri("https://repo.essentialsx.net/releases/") }
+    maven { url = uri("https://repo.kryptonmc.org/releases/") }
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
+
+    // TAB
+    compileOnly("me.neznamy:tab-api:3.0.2")
 
     // Providers
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")

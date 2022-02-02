@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.azisaba.tabBukkitBridge.data.DataKey;
+import net.azisaba.tabBukkitBridge.tab.TheTAB;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -52,6 +53,13 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
         Bukkit.getMessenger().registerIncomingPluginChannel(this, CHANNEL_NAME, this);
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, CHANNEL_NAME);
         registerEvents();
+        try {
+            TheTAB.enable();
+        } catch (Throwable t) {
+            // this is not an error, because bridge can still work.
+            getLogger().info("Failed to enable TAB integration");
+            t.printStackTrace();
+        }
     }
 
     private void registerEvents() {

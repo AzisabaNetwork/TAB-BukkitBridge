@@ -51,6 +51,12 @@ public class DataKey<T, R> {
     public static final DataKey<Player, Double> POSITION_Z = new DataKey<Player, Double>(0.0).placeholders("position_z");
     public static final DataKey<Player, String> GAMEMODE = new DataKey<Player, String>("survival").placeholders("gamemode");
     public static final DataKey<Player, String> TEAM_NAME = new DataKey<Player, String>("").placeholders("team_name");
+    public static final DataKey<Player, String> TEAM_DISPLAY_NAME = new DataKey<Player, String>("").placeholders("team_display_name");
+    public static final DataKey<Player, String> TEAM_SUFFIX = new DataKey<Player, String>("").placeholders("team_suffix");
+    public static final DataKey<Player, String> TEAM_PREFIX = new DataKey<Player, String>("").placeholders("team_prefix");
+    public static final DataKey<Player, String> TEAM_COLOR_NAME = new DataKey<Player, String>("").placeholders("team_color_name");
+    public static final DataKey<Player, String> TEAM_COLOR = new DataKey<Player, String>("").placeholders("team_color");
+    public static final DataKey<Player, String> TEAM_NAMETAG_VISIBILITY = new DataKey<Player, String>("").placeholders("team_nametag_visibility");
     public static final DataKey<Player, Integer> PLAYER_COUNT = new DataKey<Player, Integer>(0).placeholders("player_count");
     public static final DataKey<Player, Integer> SAFE_PLAYER_COUNT = new DataKey<Player, Integer>(0).placeholders("safe_player_count");
 

@@ -26,5 +26,11 @@ public class PlayerDataProvider {
             throw Skip.SKIP;
         }));
         DataKey.TEAM_NAME.register(p -> true, Util.nonNullMapper(p -> Util.nonNullMap(Util.nonNullMap(p.getScoreboard(), s -> s.getEntryTeam(p.getName())), Team::getName)));
+        DataKey.TEAM_DISPLAY_NAME.register(p -> true, Util.nonNullMapper(p -> Util.nonNullMap(Util.nonNullMap(p.getScoreboard(), s -> s.getEntryTeam(p.getName())), Team::getDisplayName)));
+        DataKey.TEAM_SUFFIX.register(p -> true, Util.nonNullMapper(p -> Util.nonNullMap(Util.nonNullMap(p.getScoreboard(), s -> s.getEntryTeam(p.getName())), Team::getSuffix)));
+        DataKey.TEAM_PREFIX.register(p -> true, Util.nonNullMapper(p -> Util.nonNullMap(Util.nonNullMap(p.getScoreboard(), s -> s.getEntryTeam(p.getName())), Team::getPrefix)));
+        DataKey.TEAM_COLOR_NAME.register(p -> true, Util.nonNullMapper(p -> Util.nonNullMap(Util.nonNullMap(p.getScoreboard(), s -> s.getEntryTeam(p.getName())), team -> team.getColor().name())));
+        DataKey.TEAM_COLOR.register(p -> true, Util.nonNullMapper(p -> Util.nonNullMap(Util.nonNullMap(p.getScoreboard(), s -> s.getEntryTeam(p.getName())), team -> team.getColor().toString())));
+        DataKey.TEAM_NAMETAG_VISIBILITY.register(p -> true, Util.nonNullMapper(p -> Util.nonNullMap(Util.nonNullMap(p.getScoreboard(), s -> s.getEntryTeam(p.getName())), team -> team.getOption(Team.Option.NAME_TAG_VISIBILITY).name())));
     }
 }

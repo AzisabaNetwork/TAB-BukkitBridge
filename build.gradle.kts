@@ -71,8 +71,9 @@ publishing {
 
     publications {
         create<MavenPublication>("mavenJava") {
-            from(components["java"])
+            artifact(tasks.getByName("jar"))
             artifact(tasks.getByName("sourcesJar"))
+            artifact(tasks.getByName("javadocJar"))
         }
     }
 }

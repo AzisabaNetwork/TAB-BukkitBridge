@@ -57,7 +57,7 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
             TheTAB.enable();
         } catch (Throwable t) {
             // this is not an error, because bridge can still work.
-            getLogger().info("Failed to enable TAB integration");
+            getLogger().info("Failed to enable TAB integration (TAB isn't installed on this server)");
             t.printStackTrace();
         }
     }

@@ -7,6 +7,8 @@ import net.azisaba.tabBukkitBridge.data.providers.LuckPermsDataProvider;
 import net.azisaba.tabBukkitBridge.data.providers.PlayerDataProvider;
 import net.azisaba.tabBukkitBridge.data.providers.ServerDataProvider;
 import net.azisaba.tabBukkitBridge.data.providers.VaultDataProvider;
+import net.azisaba.tabBukkitBridge.event.DataKeyRegisterEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -102,10 +104,7 @@ public class DataKey<T, R> {
                 return provider.apply(t);
             }
         };
-        providers.add(dataProvider);
-        for (DataKey<T, R> key : additionalKeys) {
-            key.register(dataProvider);
-        }
+        register(dataProvider, additionalKeys);
     }
 
     /**
@@ -114,10 +113,16 @@ public class DataKey<T, R> {
      */
     @SafeVarargs
     public final void register(@NotNull DataProvider<T, R> provider, @NotNull DataKey<T, R>@NotNull... additionalKeys) {
-        providers.add(provider);
+        registerProvider(provider);
         for (DataKey<T, R> key : additionalKeys) {
-            key.register(provider);
+            key.registerProvider(provider);
         }
+    }
+
+    protected void registerProvider(@NotNull DataProvider<T, R> provider) {
+        Bukkit.getPluginManager().callEvent(new DataKeyRegisterEvent(DataKeyRegisterEvent.State.PRE, this));
+        providers.add(provider);
+        Bukkit.getPluginManager().callEvent(new DataKeyRegisterEvent(DataKeyRegisterEvent.State.POST, this));
     }
 
     @NotNull

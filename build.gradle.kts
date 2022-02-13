@@ -1,14 +1,18 @@
 plugins {
     java
+    `maven-publish`
 }
 
 group = "net.azisaba"
-version = "1.3.0"
+version = "1.4.0"
 
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(8))
     }
+
+    withSourcesJar()
+    withJavadocJar()
 }
 
 repositories {
@@ -48,5 +52,27 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         from(projectDir) { include("LICENSE") }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "repo"
+            credentials(PasswordCredentials::class)
+            url = uri(
+                if (project.version.toString().endsWith("SNAPSHOT"))
+                    project.findProperty("deploySnapshotURL") ?: System.getProperty("deploySnapshotURL", "")
+                else
+                    project.findProperty("deployReleasesURL") ?: System.getProperty("deployReleasesURL", "")
+            )
+        }
+    }
+
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            artifact(tasks.getByName("sourcesJar"))
+        }
     }
 }

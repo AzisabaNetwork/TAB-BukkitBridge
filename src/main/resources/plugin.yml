@@ -1,6 +1,7 @@
 name: TAB-BukkitBridge
 version: @version@
 main: net.azisaba.tabBukkitBridge.BukkitBridge
+api-version: 1.13
 softdepend:
   - Vault
   - LuckPerms

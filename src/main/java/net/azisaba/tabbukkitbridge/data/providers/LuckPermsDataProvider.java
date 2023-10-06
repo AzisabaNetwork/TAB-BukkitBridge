@@ -1,7 +1,7 @@
-package net.azisaba.tabBukkitBridge.data.providers;
+package net.azisaba.tabbukkitbridge.data.providers;
 
-import net.azisaba.tabBukkitBridge.data.DataKey;
-import net.azisaba.tabBukkitBridge.util.Util;
+import net.azisaba.tabbukkitbridge.data.DataKey;
+import net.azisaba.tabbukkitbridge.util.Util;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;

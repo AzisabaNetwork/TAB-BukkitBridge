@@ -1,4 +1,4 @@
-package net.azisaba.tabBukkitBridge.data;
+package net.azisaba.tabbukkitbridge.data;
 
 import org.jetbrains.annotations.Nullable;
 

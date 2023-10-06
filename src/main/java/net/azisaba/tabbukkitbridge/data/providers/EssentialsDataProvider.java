@@ -1,9 +1,9 @@
-package net.azisaba.tabBukkitBridge.data.providers;
+package net.azisaba.tabbukkitbridge.data.providers;
 
 import com.earth2me.essentials.Essentials;
-import net.azisaba.tabBukkitBridge.data.DataKey;
-import net.azisaba.tabBukkitBridge.data.Skip;
-import net.azisaba.tabBukkitBridge.util.Util;
+import net.azisaba.tabbukkitbridge.data.DataKey;
+import net.azisaba.tabbukkitbridge.data.Skip;
+import net.azisaba.tabbukkitbridge.util.Util;
 import org.bukkit.Bukkit;
 
 public class EssentialsDataProvider {

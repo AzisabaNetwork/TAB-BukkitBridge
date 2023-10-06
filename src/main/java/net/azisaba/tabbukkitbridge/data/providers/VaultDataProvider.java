@@ -1,7 +1,7 @@
-package net.azisaba.tabBukkitBridge.data.providers;
+package net.azisaba.tabbukkitbridge.data.providers;
 
-import net.azisaba.tabBukkitBridge.data.DataKey;
-import net.azisaba.tabBukkitBridge.util.Util;
+import net.azisaba.tabbukkitbridge.data.DataKey;
+import net.azisaba.tabbukkitbridge.util.Util;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;

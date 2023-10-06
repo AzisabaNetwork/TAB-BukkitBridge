@@ -1,13 +1,13 @@
-package net.azisaba.tabBukkitBridge.data;
+package net.azisaba.tabbukkitbridge.data;
 
-import net.azisaba.tabBukkitBridge.BukkitBridge;
-import net.azisaba.tabBukkitBridge.data.providers.CachedDataProvider;
-import net.azisaba.tabBukkitBridge.data.providers.EssentialsDataProvider;
-import net.azisaba.tabBukkitBridge.data.providers.LuckPermsDataProvider;
-import net.azisaba.tabBukkitBridge.data.providers.PlayerDataProvider;
-import net.azisaba.tabBukkitBridge.data.providers.ServerDataProvider;
-import net.azisaba.tabBukkitBridge.data.providers.VaultDataProvider;
-import net.azisaba.tabBukkitBridge.event.DataKeyRegisterEvent;
+import net.azisaba.tabbukkitbridge.BukkitBridge;
+import net.azisaba.tabbukkitbridge.data.providers.CachedDataProvider;
+import net.azisaba.tabbukkitbridge.data.providers.EssentialsDataProvider;
+import net.azisaba.tabbukkitbridge.data.providers.LuckPermsDataProvider;
+import net.azisaba.tabbukkitbridge.data.providers.PlayerDataProvider;
+import net.azisaba.tabbukkitbridge.data.providers.ServerDataProvider;
+import net.azisaba.tabbukkitbridge.data.providers.VaultDataProvider;
+import net.azisaba.tabbukkitbridge.event.DataKeyRegisterEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;

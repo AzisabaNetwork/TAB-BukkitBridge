@@ -1,4 +1,4 @@
-package net.azisaba.tabBukkitBridge.tab;
+package net.azisaba.tabbukkitbridge.tab;
 
 import me.neznamy.tab.api.TabAPI;
 import me.neznamy.tab.api.placeholder.Placeholder;
@@ -37,28 +37,28 @@ public abstract class AbstractPlaceholder implements Placeholder {
 	public String getIdentifier() {
 		return identifier;
 	}
-	
+
 	@Override
 	public int getRefresh() {
 		return refresh;
 	}
-	
+
 	public String[] getNestedPlaceholders(String output) {
 		if (!output.contains("%")) return EMPTY_ARRAY;
 		return TabAPI.getInstance().getPlaceholderManager().detectPlaceholders(output).toArray(EMPTY_ARRAY);
 	}
-	
+
 	private String replace(String string, String original, String replacement) {
 		if (!string.contains(original)) return string;
 		if (string.equals(original)) return replacement;
 		return string.replace(original, replacement);
 	}
-	
+
 	@Override
 	public void enableTriggerMode() {
 		triggerMode = true;
 	}
-	
+
 	@Override
 	public void enableTriggerMode(Runnable onActivation, Runnable onDisable) {
 		triggerMode = true;
@@ -66,7 +66,7 @@ public abstract class AbstractPlaceholder implements Placeholder {
 		this.onDisable = onDisable;
 		if (active && onActivation != null) onActivation.run();
 	}
-	
+
 	public void markAsUsed() {
 		if (active) return;
 		active = true;
@@ -77,7 +77,7 @@ public abstract class AbstractPlaceholder implements Placeholder {
 	public boolean isTriggerMode() {
 		return triggerMode;
 	}
-	
+
 	@Override
 	public void unload() {
 		if (onDisable != null && active) onDisable.run();

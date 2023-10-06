@@ -1,4 +1,4 @@
-package net.azisaba.tabBukkitBridge.tab;
+package net.azisaba.tabbukkitbridge.tab;
 
 import java.util.function.Supplier;
 

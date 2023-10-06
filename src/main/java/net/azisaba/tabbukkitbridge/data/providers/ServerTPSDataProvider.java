@@ -1,6 +1,6 @@
-package net.azisaba.tabBukkitBridge.data.providers;
+package net.azisaba.tabbukkitbridge.data.providers;
 
-import net.azisaba.tabBukkitBridge.data.DataProvider;
+import net.azisaba.tabbukkitbridge.data.DataProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;

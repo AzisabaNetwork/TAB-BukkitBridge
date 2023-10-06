@@ -1,6 +1,6 @@
-package net.azisaba.tabBukkitBridge.util;
+package net.azisaba.tabbukkitbridge.util;
 
-import net.azisaba.tabBukkitBridge.data.Skip;
+import net.azisaba.tabbukkitbridge.data.Skip;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

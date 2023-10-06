@@ -1,8 +1,8 @@
-package net.azisaba.tabBukkitBridge.data.providers;
+package net.azisaba.tabbukkitbridge.data.providers;
 
-import net.azisaba.tabBukkitBridge.data.DataKey;
-import net.azisaba.tabBukkitBridge.data.Skip;
-import net.azisaba.tabBukkitBridge.util.Util;
+import net.azisaba.tabbukkitbridge.data.DataKey;
+import net.azisaba.tabbukkitbridge.data.Skip;
+import net.azisaba.tabbukkitbridge.util.Util;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;

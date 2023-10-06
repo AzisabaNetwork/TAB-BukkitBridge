@@ -1,4 +1,4 @@
-package net.azisaba.tabBukkitBridge.tab;
+package net.azisaba.tabbukkitbridge.tab;
 
 import me.neznamy.tab.api.TabAPI;
 import me.neznamy.tab.api.TabPlayer;

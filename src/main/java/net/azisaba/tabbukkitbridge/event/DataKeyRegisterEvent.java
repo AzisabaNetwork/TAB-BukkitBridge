@@ -1,6 +1,6 @@
-package net.azisaba.tabBukkitBridge.event;
+package net.azisaba.tabbukkitbridge.event;
 
-import net.azisaba.tabBukkitBridge.data.DataKey;
+import net.azisaba.tabbukkitbridge.data.DataKey;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;

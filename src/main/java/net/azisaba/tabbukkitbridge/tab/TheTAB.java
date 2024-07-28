@@ -16,7 +16,7 @@ public class TheTAB {
                 TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder(
                         "%" + identifier + "%",
                         50 * 20,
-                        p -> dataKey.get(dataKey.playerToT((Player) p.getPlayer()))
+                        p -> String.valueOf(dataKey.get(dataKey.playerToT((Player) p.getPlayer())))
                 );
             }
         }

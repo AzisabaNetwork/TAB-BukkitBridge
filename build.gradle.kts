@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "net.azisaba"
-version = "2.0.0"
+version = "2.0.1"
 
 java {
     toolchain {
@@ -71,9 +71,10 @@ publishing {
 
     publications {
         create<MavenPublication>("mavenJava") {
-            artifact(tasks.getByName("jar"))
-            artifact(tasks.getByName("sourcesJar"))
-            artifact(tasks.getByName("javadocJar"))
+            from(components["java"])
+//            artifact(tasks.getByName("jar"))
+//            artifact(tasks.getByName("sourcesJar"))
+//            artifact(tasks.getByName("javadocJar"))
         }
     }
 }

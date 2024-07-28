@@ -90,6 +90,7 @@ public class DataKey<T, R> {
      * Registers a new provider. This method is not thread-safe.
      * @param condition condition to trigger provider
      * @param provider data provider
+     * @param additionalKeys keys
      */
     @SafeVarargs
     public final void register(@NotNull Predicate<@Nullable T> condition, @NotNull Function<@Nullable T, @Nullable R> provider, @NotNull DataKey<T, R>@NotNull... additionalKeys) {
@@ -110,6 +111,7 @@ public class DataKey<T, R> {
     /**
      * Registers a new provider. this method is not thread-safe.
      * @param provider data provider
+     * @param additionalKeys keys
      */
     @SafeVarargs
     public final void register(@NotNull DataProvider<T, R> provider, @NotNull DataKey<T, R>@NotNull... additionalKeys) {

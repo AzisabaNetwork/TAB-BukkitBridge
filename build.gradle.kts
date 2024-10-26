@@ -18,9 +18,8 @@ java {
 repositories {
     mavenCentral()
     maven { url = uri("https://hub.spigotmc.org/nexus/content/groups/public/") }
-    maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://repo.azisaba.net/repository/maven-public/") }
     maven { url = uri("https://repo.essentialsx.net/releases/") }
-    maven { url = uri("https://repo.kryptonmc.org/releases/") }
 }
 
 dependencies {
@@ -28,16 +27,18 @@ dependencies {
     compileOnly("org.jetbrains:annotations:23.0.0")
 
     // TAB
-    compileOnly("me.neznamy:tab-api:3.0.2")
+    compileOnly(files("libs/TAB.v3.0.2.jar")) // https://github.com/NEZNAMY/TAB/releases/download/3.0.2/TAB.v3.0.2.jar
 
     // Providers
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.luckperms:api:5.3")
-    compileOnly("net.essentialsx:EssentialsX:2.19.2")
+    compileOnly("net.essentialsx:EssentialsX:2.19.2") {
+        exclude("io.papermc", "paperlib")
+    }
 }
 
 tasks {
-    withType<ProcessResources> {
+    processResources {
         filteringCharset = "UTF-8"
         from(sourceSets.main.get().resources.srcDirs) {
             include("**")

@@ -2,3 +2,5 @@
 .gradle/
 build/
 *.iml
+libs/
+.DS_Store

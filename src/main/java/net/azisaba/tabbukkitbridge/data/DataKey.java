@@ -67,7 +67,7 @@ public class DataKey<T, R> {
     private final List<DataProvider<T, R>> providers = new ArrayList<>();
     private final Set<String> placeholders = new HashSet<>();
 
-    private DataKey(@NotNull Function<Player, T> ptFunction, @NotNull R defaultValue) {
+    public DataKey(@NotNull Function<Player, T> ptFunction, @NotNull R defaultValue) {
         this.ptFunction = ptFunction;
         this.defaultValue = Objects.requireNonNull(defaultValue);
         DATA_TYPES.add(this);
@@ -77,7 +77,7 @@ public class DataKey<T, R> {
      * This constructor works only if <code>T</code> is instance of Player.
      */
     @SuppressWarnings("unchecked")
-    private DataKey(@NotNull R defaultValue) {
+    public DataKey(@NotNull R defaultValue) {
         this(p -> (T) p, defaultValue);
     }
 

@@ -26,7 +26,7 @@ import java.util.function.Predicate;
 
 public class DataKey<T, R> {
     private static final List<DataKey<?, ?>> DATA_TYPES = new ArrayList<>();
-    public static final DataKey<Void, Double> TPS = new DataKey<Void, Double>(p -> null, 20.0).placeholders("tps");
+    public static final DataKey<Void, Double> TPS = new DataKey<Void, Double>(p -> null, 20.0).placeholders("tps", "tps_double");
     public static final DataKey<Double, String> TPS_FORMATTED = new DataKey<>(p -> TPS.get(null), "20.00").placeholders("tps_formatted");
     public static final DataKey<Player, String> WORLD = new DataKey<Player, String>("world").placeholders("world", "player_world");
     public static final DataKey<Player, Boolean> ESSENTIALS_VANISHED = new DataKey<Player, Boolean>(false).placeholders("essentials_vanished");
@@ -75,6 +75,7 @@ public class DataKey<T, R> {
 
     /**
      * This constructor works only if <code>T</code> is instance of Player.
+     * @param defaultValue default value
      */
     @SuppressWarnings("unchecked")
     public DataKey(@NotNull R defaultValue) {
@@ -184,6 +185,11 @@ public class DataKey<T, R> {
 
     public T playerToT(Player player) {
         return ptFunction.apply(player);
+    }
+
+    @NotNull
+    public R getByPlayer(Player player) {
+        return get(ptFunction.apply(player));
     }
 
     @NotNull

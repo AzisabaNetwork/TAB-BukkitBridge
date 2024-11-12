@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "net.azisaba"
-version = "2.0.2"
+version = "3.0.0"
 
 java {
     toolchain {

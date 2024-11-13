@@ -59,13 +59,7 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, CHANNEL_NAME);
         registerEvents();
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getOnlinePlayers().forEach(BukkitBridge::updatePlaceholders), 20, 20);
-        try {
-            TheTAB.enable();
-        } catch (Throwable t) {
-            // this is not an error, because bridge can still work.
-            getLogger().info("Failed to enable TAB integration (TAB isn't installed on this server)");
-            t.printStackTrace();
-        }
+        TheTAB.enable();
     }
 
     private void registerEvents() {

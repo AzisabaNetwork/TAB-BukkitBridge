@@ -11,23 +11,28 @@ public class TheTAB {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void enable() {
-        for (DataKey dataKey : DataKey.values()) {
-            for (Object identifier : dataKey.getPlaceholders()) {
-                TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder(
-                        "%" + identifier + "%",
-                        50 * 20,
-                        p -> String.valueOf(dataKey.get(dataKey.playerToT((Player) p.getPlayer())))
-                );
-            }
-        }
         try {
-            Class.forName("me.neznamy.tab.shared.placeholders.conditions.Condition").getMethod("finishSetups").invoke(null);
-        } catch (ReflectiveOperationException e) {
-            BukkitBridge.plugin.getLogger().warning("Failed to execute Condition#finishSetups");
+            for (DataKey dataKey : DataKey.values()) {
+                for (Object identifier : dataKey.getPlaceholders()) {
+                    TabAPI.getInstance().getPlaceholderManager().registerPlayerPlaceholder(
+                            "%" + identifier + "%",
+                            50 * 20,
+                            p -> String.valueOf(dataKey.get(dataKey.playerToT((Player) p.getPlayer())))
+                    );
+                }
+            }
+            try {
+                Class.forName("me.neznamy.tab.shared.placeholders.conditions.Condition").getMethod("finishSetups").invoke(null);
+            } catch (ReflectiveOperationException e) {
+                BukkitBridge.plugin.getLogger().warning("Failed to execute Condition#finishSetups");
+                e.printStackTrace();
+            }
+            if (enabled) return;
+            TabAPI.getInstance().getEventBus().register(TabLoadEvent.class, e -> enable());
+            enabled = true;
+        } catch (Throwable e) {
+            BukkitBridge.plugin.getLogger().warning("Failed to enable the TAB support");
             e.printStackTrace();
         }
-        if (enabled) return;
-        TabAPI.getInstance().getEventBus().register(TabLoadEvent.class, e -> enable());
-        enabled = true;
     }
 }

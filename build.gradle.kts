@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "net.azisaba"
-version = "3.0.1"
+version = "3.1.0"
 
 java {
     toolchain {
@@ -20,6 +20,7 @@ repositories {
     maven { url = uri("https://hub.spigotmc.org/nexus/content/groups/public/") }
     maven { url = uri("https://repo.azisaba.net/repository/maven-public/") }
     maven { url = uri("https://repo.essentialsx.net/releases/") }
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
 dependencies {
@@ -30,6 +31,7 @@ dependencies {
     compileOnly(files("libs/TAB.v3.0.2.jar")) // https://github.com/NEZNAMY/TAB/releases/download/3.0.2/TAB.v3.0.2.jar
 
     // Providers
+    compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.luckperms:api:5.3")
     compileOnly("net.essentialsx:EssentialsX:2.19.2") {

@@ -3,6 +3,7 @@ package net.azisaba.tabbukkitbridge;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.azisaba.tabbukkitbridge.data.DataKey;
 import net.azisaba.tabbukkitbridge.tab.TheTAB;
 import org.bukkit.Bukkit;
@@ -167,6 +168,18 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
             for (String placeholder : dataKey.getPlaceholders()) {
                 placeholders.put(placeholder, value);
             }
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            placeholders.putAll(getPlaceholderAPI(player));
+        }
+        return placeholders;
+    }
+
+    private static Map<String, String> getPlaceholderAPI(@NotNull Player player) {
+        Map<String, String> placeholders = new HashMap<>();
+        for (String identifier : PlaceholderAPI.getRegisteredIdentifiers()) {
+            String value = PlaceholderAPI.setPlaceholders(player, "%" + identifier + "%");
+            placeholders.put(identifier, value);
         }
         return placeholders;
     }

@@ -75,7 +75,7 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
                 writePlayerJoinResponse(out, e.getPlayer());
                 e.getPlayer().sendPluginMessage(this, CHANNEL_NAME, out.toByteArray());
             });
-        } catch (NoClassDefFoundError ignored) {}
+        } catch (NoClassDefFoundError | Exception ignored) {}
     }
 
     @SuppressWarnings("unchecked")

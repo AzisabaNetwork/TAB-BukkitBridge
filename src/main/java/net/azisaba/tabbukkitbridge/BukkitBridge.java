@@ -59,7 +59,7 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
         Bukkit.getMessenger().registerIncomingPluginChannel(this, CHANNEL_NAME, this);
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, CHANNEL_NAME);
         registerEvents();
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getOnlinePlayers().forEach(BukkitBridge::updatePlaceholders), 20, 20);
+        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getOnlinePlayers().forEach(this::updatePlaceholders), 20, 20);
         TheTAB.enable();
     }
 
@@ -142,7 +142,7 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
 
     private static final Map<Map.Entry<UUID, String>, String> STORED_PLACEHOLDERS = new ConcurrentHashMap<>();
 
-    private static void updatePlaceholders(@NotNull Player player) {
+    private void updatePlaceholders(@NotNull Player player) {
         getPlaceholders(player).forEach((key, value) -> {
             Map.Entry<UUID, String> entry = new AbstractMap.SimpleEntry<>(player.getUniqueId(), key);
             String stored = STORED_PLACEHOLDERS.get(entry);
@@ -161,7 +161,7 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
         player.sendPluginMessage(plugin, CHANNEL_NAME, out.toByteArray());
     }
 
-    private static Map<String, String> getPlaceholders(@NotNull Player player) {
+    private Map<String, String> getPlaceholders(@NotNull Player player) {
         Map<String, String> placeholders = new HashMap<>();
         for (DataKey<?, ?> dataKey : DataKey.values()) {
             String value = String.valueOf(dataKey.getByPlayer(player));
@@ -169,17 +169,23 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
                 placeholders.put(placeholder, value);
             }
         }
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI") && !getConfig().getBoolean("disable-placeholder-api-integration", false)) {
             placeholders.putAll(getPlaceholderAPI(player));
         }
         return placeholders;
     }
 
-    private static Map<String, String> getPlaceholderAPI(@NotNull Player player) {
+    private Map<String, String> getPlaceholderAPI(@NotNull Player player) {
         Map<String, String> placeholders = new HashMap<>();
         for (String identifier : PlaceholderAPI.getRegisteredIdentifiers()) {
-            String value = PlaceholderAPI.setPlaceholders(player, "%" + identifier + "%");
-            placeholders.put(identifier, value);
+            if (getConfig().getStringList("disabled-placeholders").contains(identifier)) continue;
+            try {
+                String value = PlaceholderAPI.setPlaceholders(player, "%" + identifier + "%");
+                placeholders.put(identifier, value);
+            } catch (Throwable e) {
+                getLogger().warning("Failed to get PlaceholderAPI value for " + identifier);
+                e.printStackTrace(ERR_PRINT_STREAM);
+            }
         }
         return placeholders;
     }
@@ -195,7 +201,7 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
         out.writeUTF(value);
     }
 
-    private static void writePlayerJoinResponse(@NotNull ByteArrayDataOutput out, Player player) {
+    private void writePlayerJoinResponse(@NotNull ByteArrayDataOutput out, Player player) {
         out.writeByte(9); // packet id
         out.writeUTF(player.getWorld().getName());
         //processGroup(player, out);

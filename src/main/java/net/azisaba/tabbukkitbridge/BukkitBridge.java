@@ -59,7 +59,7 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
         Bukkit.getMessenger().registerIncomingPluginChannel(this, CHANNEL_NAME, this);
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, CHANNEL_NAME);
         registerEvents();
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getOnlinePlayers().forEach(this::updatePlaceholders), 20, 20);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> Bukkit.getOnlinePlayers().forEach(this::updatePlaceholders), 20, 20);
         TheTAB.enable();
     }
 

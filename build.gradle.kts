@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "net.azisaba"
-version = "3.1.3"
+version = "3.2.0"
 
 java {
     toolchain {
@@ -31,7 +31,7 @@ dependencies {
     compileOnly(files("libs/TAB.v3.0.2.jar")) // https://github.com/NEZNAMY/TAB/releases/download/3.0.2/TAB.v3.0.2.jar
 
     // Providers
-    compileOnly("me.clip:placeholderapi:2.11.6")
+    compileOnly("me.clip:placeholderapi:2.12.2")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.luckperms:api:5.3")
     compileOnly("net.essentialsx:EssentialsX:2.19.2") {
@@ -42,12 +42,17 @@ dependencies {
 tasks {
     processResources {
         filteringCharset = "UTF-8"
-        from(sourceSets.main.get().resources.srcDirs) {
+        from(
+            sourceSets.main
+                .get()
+                .resources.srcDirs,
+        ) {
             include("**")
 
-            val tokenReplacementMap = mapOf(
-                "version" to project.version,
-            )
+            val tokenReplacementMap =
+                mapOf(
+                    "version" to project.version,
+                )
 
             filter<org.apache.tools.ant.filters.ReplaceTokens>("tokens" to tokenReplacementMap)
         }
@@ -63,12 +68,16 @@ publishing {
         maven {
             name = "repo"
             credentials(PasswordCredentials::class)
-            url = uri(
-                if (project.version.toString().endsWith("SNAPSHOT"))
-                    project.findProperty("deploySnapshotURL") ?: System.getProperty("deploySnapshotURL", "https://repo.azisaba.net/repository/maven-snapshots/")
-                else
-                    project.findProperty("deployReleasesURL") ?: System.getProperty("deployReleasesURL", "https://repo.azisaba.net/repository/maven-releases/")
-            )
+            url =
+                uri(
+                    if (project.version.toString().endsWith("SNAPSHOT")) {
+                        project.findProperty("deploySnapshotURL")
+                            ?: System.getProperty("deploySnapshotURL", "https://repo.azisaba.net/repository/maven-snapshots/")
+                    } else {
+                        project.findProperty("deployReleasesURL")
+                            ?: System.getProperty("deployReleasesURL", "https://repo.azisaba.net/repository/maven-releases/")
+                    },
+                )
         }
     }
 

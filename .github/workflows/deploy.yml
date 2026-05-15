@@ -25,8 +25,10 @@ jobs:
         uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
       - name: chmod gradlew
         run: chmod +x gradlew
-      - name: download libs
-        run: mkdir libs && cd libs && wget https://github.com/NEZNAMY/TAB/releases/download/3.0.2/TAB.v3.0.2.jar
+      - name: Download TAB
+        run: |
+          mkdir libs
+          wget https://github.com/NEZNAMY/TAB/releases/download/3.0.2/TAB.v3.0.2.jar -O libs/TAB.v3.0.2.jar
 
       - name: build
         run: ./gradlew build
@@ -41,9 +43,5 @@ jobs:
           echo "azisabaNmsPassword=${{ secrets.REPO_PASSWORD }}" >> $HOME/.gradle/gradle.properties
           echo "repoUsername=${{ secrets.REPO_USERNAME }}" >> $HOME/.gradle/gradle.properties
           echo "repoPassword=${{ secrets.REPO_PASSWORD }}" >> $HOME/.gradle/gradle.properties
-      - name: Download TAB
-        run: |
-          mkdir libs
-          wget https://github.com/NEZNAMY/TAB/releases/download/3.0.2/TAB.v3.0.2.jar -O libs/TAB.v3.0.2.jar
       - name: Deploy
         run: ./gradlew clean test publish

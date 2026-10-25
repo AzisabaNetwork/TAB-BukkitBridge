@@ -2,6 +2,7 @@ package net.azisaba.tabbukkitbridge.data;
 
 import net.azisaba.tabbukkitbridge.BukkitBridge;
 import net.azisaba.tabbukkitbridge.data.providers.CachedDataProvider;
+import net.azisaba.tabbukkitbridge.data.providers.EssentialsCDataProvider;
 import net.azisaba.tabbukkitbridge.data.providers.EssentialsDataProvider;
 import net.azisaba.tabbukkitbridge.data.providers.LuckPermsDataProvider;
 import net.azisaba.tabbukkitbridge.data.providers.PlayerDataProvider;
@@ -169,6 +170,7 @@ public class DataKey<T, R> {
         // Priority: top -> bottom (top would be evaluated at first, and bottom would be evaluated at last)
         LuckPermsDataProvider.register();
         EssentialsDataProvider.register();
+        EssentialsCDataProvider.register();
         VaultDataProvider.register();
         PlayerDataProvider.register();
         ServerDataProvider.register(plugin);

@@ -1,18 +1,22 @@
 package net.azisaba.tabbukkitbridge.data.providers;
 
 import net.azisaba.tabbukkitbridge.data.DataProvider;
-import org.bukkit.Bukkit;
+import net.azisaba.tabbukkitbridge.util.Schedulers;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Measures TPS of the main thread (Paper/Spigot) or the global region (Folia).
+ */
 public class ServerTPSDataProvider implements DataProvider<Void, Double>, Runnable {
     private static final int INTERVAL = 40;
-    private double tps = 20;
-    private long previousTime;
+    // read from other threads (player threads on Folia)
+    private volatile double tps = 20;
+    private long previousTime = System.currentTimeMillis();
 
     public ServerTPSDataProvider(@NotNull Plugin plugin) {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, INTERVAL, INTERVAL);
+        Schedulers.runGlobalTimer(plugin, this, INTERVAL, INTERVAL);
     }
 
     @Override

@@ -4,11 +4,11 @@ plugins {
 }
 
 group = "net.azisaba"
-version = "3.2.0"
+version = "3.3.0"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 
     withSourcesJar()
@@ -17,6 +17,7 @@ java {
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
     maven { url = uri("https://hub.spigotmc.org/nexus/content/groups/public/") }
     maven { url = uri("https://repo.azisaba.net/repository/maven-public/") }
     maven { url = uri("https://repo.essentialsx.net/releases/") }
@@ -24,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
     compileOnly("org.jetbrains:annotations:23.0.0")
 
     // TAB

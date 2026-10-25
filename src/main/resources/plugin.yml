@@ -2,9 +2,11 @@ name: TAB-BukkitBridge
 version: @version@
 main: net.azisaba.tabbukkitbridge.BukkitBridge
 api-version: 1.13
+folia-supported: true
 softdepend:
   - Vault
   - LuckPerms
   - Essentials
+  - EssentialsC
   - TAB
   - PlaceholderAPI

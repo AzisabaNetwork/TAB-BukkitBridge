@@ -6,6 +6,7 @@ import com.google.common.io.ByteStreams;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.azisaba.tabbukkitbridge.data.DataKey;
 import net.azisaba.tabbukkitbridge.tab.TheTAB;
+import net.azisaba.tabbukkitbridge.util.Schedulers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -21,13 +22,16 @@ import org.jetbrains.annotations.Nullable;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
     public static BukkitBridge plugin;
@@ -59,8 +63,15 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
         Bukkit.getMessenger().registerIncomingPluginChannel(this, CHANNEL_NAME, this);
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, CHANNEL_NAME);
         registerEvents();
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getOnlinePlayers().forEach(this::updatePlaceholders), 20, 20);
+        // Player state must be read on the player's own thread (entity scheduler on Folia, main thread on Paper)
+        Schedulers.runGlobalTimer(this, () -> Bukkit.getOnlinePlayers().forEach(player ->
+                Schedulers.runForEntity(this, player, () -> updatePlaceholders(player))), 20, 20);
         TheTAB.enable();
+    }
+
+    @Override
+    public void onDisable() {
+        Schedulers.cancelAll(this);
     }
 
     private void registerEvents() {
@@ -89,7 +100,7 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
         String type = in.readUTF(); // Type
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        async(() -> {
+        Schedulers.runForEntity(this, player, () -> {
             if (type.equals("PlayerJoin")) {
                 writePlayerJoinResponse(out, player);
             }
@@ -99,11 +110,10 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
                 out.writeUTF(permission);
                 out.writeBoolean(player.hasPermission(permission));
             }
-            return out.toByteArray();
-        }).thenAccept(sync(data -> {
+            byte[] data = out.toByteArray();
             if (data.length == 0) return;
             player.sendPluginMessage(this, channel, data);
-        }));
+        });
     }
 
     private void processAttribute(@NotNull Player player, @NotNull String attribute, @NotNull ByteArrayDataOutput out) {
@@ -128,16 +138,6 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
 
     private static void processGroup(@NotNull Player player, @NotNull ByteArrayDataOutput out) {
         out.writeUTF(DataKey.PRIMARY_GROUP.get(player)); // Primary group
-    }
-
-    @NotNull
-    private <T> CompletableFuture<T> async(@NotNull Supplier<T> supplier) {
-        return CompletableFuture.supplyAsync(supplier, r -> Bukkit.getScheduler().runTaskAsynchronously(this, r));
-    }
-
-    @NotNull
-    private <T> Consumer<T> sync(Consumer<T> action) {
-        return t -> Bukkit.getScheduler().runTask(this, () -> action.accept(t));
     }
 
     private static final Map<Map.Entry<UUID, String>, String> STORED_PLACEHOLDERS = new ConcurrentHashMap<>();
@@ -175,9 +175,29 @@ public class BukkitBridge extends JavaPlugin implements PluginMessageListener {
         return placeholders;
     }
 
+    /**
+     * Built-in placeholders of TAB (without %). PlaceholderAPI identifiers with these names are not sent, so that they
+     * do not override TAB's own placeholders on the proxy.
+     */
+    private static final Set<String> TAB_BUILTIN_PLACEHOLDERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            "player", "displayname", "uuid", "server", "serveronline", "world", "worldonline", "online", "staffonline",
+            "nonstaffonline", "ping", "vanished", "group", "rank", "gamemode", "health", "tps", "mspt", "time", "date",
+            "bedrock", "luckperms-prefix", "luckperms-suffix", "player-version", "player-version-id", "memory-used",
+            "memory-max", "memory-used-gb", "memory-max-gb"
+    )));
+
+    private static boolean isReservedPlaceholder(@NotNull String identifier) {
+        if (TAB_BUILTIN_PLACEHOLDERS.contains(identifier.toLowerCase(Locale.ROOT))) return true;
+        for (DataKey<?, ?> dataKey : DataKey.values()) {
+            if (dataKey.getPlaceholders().contains(identifier)) return true;
+        }
+        return false;
+    }
+
     private Map<String, String> getPlaceholderAPI(@NotNull Player player) {
         Map<String, String> placeholders = new HashMap<>();
         for (String identifier : PlaceholderAPI.getRegisteredIdentifiers()) {
+            if (isReservedPlaceholder(identifier)) continue;
             if (getConfig().getStringList("disabled-placeholders").contains(identifier)) continue;
             try {
                 String value = PlaceholderAPI.setPlaceholders(player, "%" + identifier + "%");

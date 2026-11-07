@@ -4,6 +4,7 @@ import me.neznamy.tab.api.TabAPI;
 import me.neznamy.tab.api.event.plugin.TabLoadEvent;
 import net.azisaba.tabbukkitbridge.BukkitBridge;
 import net.azisaba.tabbukkitbridge.data.DataKey;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class TheTAB {
@@ -11,6 +12,7 @@ public class TheTAB {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void enable() {
+        if (!Bukkit.getPluginManager().isPluginEnabled("TAB")) return;
         try {
             for (DataKey dataKey : DataKey.values()) {
                 for (Object identifier : dataKey.getPlaceholders()) {
